@@ -311,52 +311,57 @@ process stitching {
 	"""
 }
 
-// // capsule - aind-smartspim-fuse
-// process fusion {
-// 	tag 'fusion'
-// 	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
+// capsule - aind-smartspim-fuse
+process fusion {
+	tag 'fusion'
+	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
 
-// 	cpus 32
-// 	memory '256 GB'
-// 	time '18h'
+	cpus 32
+	memory '256 GB'
+	time '18h'
 
-// 	input:
-// 	path 'capsule/data/' from dataset_to_fuse_manifest.collect()
-// 	path 'capsule/data/' from dataset_to_fuse_data_description.collect()
-// 	path 'capsule/data/' from dataset_to_fuse_acquisition.collect()
-// 	path 'capsule/data/' from preprocessing_to_fuse.flatten()
-// 	path 'capsule/data/' from stitch_to_fuse.collect()
+	input:
+	path 'capsule/data/' from dataset_to_fuse_manifest.collect()
+	path 'capsule/data/' from dataset_to_fuse_data_description.collect()
+	path 'capsule/data/' from dataset_to_fuse_acquisition.collect()
+	path 'capsule/data/' from preprocessing_to_fuse.flatten()
+	path 'capsule/data/' from stitch_to_fuse.collect()
 
-// 	output:
-// 	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_registration
-// 	path 'capsule/results/fusion_*' into fuse_to_dispatch
-// 	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_cell_detect
-// 	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_quantification
-// 	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fusion_to_classification
+	output:
+	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_registration
+	path 'capsule/results/fusion_*' into fuse_to_dispatch
+	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_cell_detect
+	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fuse_to_quantification
+	path 'capsule/results/fusion_*/OMEZarr/Ex_*_Em_*.zarr' into fusion_to_classification
 
-// 	script:
-// 	"""
-// 	#!/usr/bin/env bash
-// 	set -e
+	script:
+	"""
+	#!/usr/bin/env bash
+	set -e
 
-// 	mkdir -p capsule
-// 	mkdir -p capsule/data
-// 	mkdir -p capsule/results
-// 	mkdir -p capsule/scratch
+	mkdir -p capsule
+	mkdir -p capsule/data
+	mkdir -p capsule/results
+	mkdir -p capsule/scratch
+	echo "Install dependencies..."
+	pip install -U --no-cache-dir \
+		aind-data-schema==1.0.0 \
+		ome-zarr==0.9.0 \
+		xarray_multiscale==2.1.0 \
+		git+https://github.com/AllenNeuralDynamics/aind-cloud-fusion.git@hybrid-runtime
+	echo "[${task.tag}] cloning git repo..."
+	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-fuse.git" capsule-repo
+	mv capsule-repo/code capsule/code
+	rm -rf capsule-repo
 
-// 	echo "[${task.tag}] cloning git repo..."
-// 	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-fuse.git" capsule-repo
-// 	mv capsule-repo/code capsule/code
-// 	rm -rf capsule-repo
+	echo "[${task.tag}] running capsule..."
+	cd capsule/code
+	chmod +x run
+	./run
 
-// 	echo "[${task.tag}] running capsule..."
-// 	cd capsule/code
-// 	chmod +x run
-// 	./run
-
-// 	echo "[${task.tag}] completed!"
-// 	"""
-// }
+	echo "[${task.tag}] completed!"
+	"""
+}
 
 // // capsule - aind-smartspim-ccf-registration
 // process atlas_registration {
