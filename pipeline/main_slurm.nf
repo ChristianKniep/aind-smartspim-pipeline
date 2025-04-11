@@ -198,7 +198,7 @@ process data_validation {
 // capsule - aind-destripe-shadow-correction
 process preprocessing {
 	tag 'preprocessing'
-	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
 
 	cpus 32
 	memory '128 GB'
