@@ -159,7 +159,7 @@ dispatch_to_classification = channel.create()
 // capsule - aind-smartspim-validation -> Only for PNGs
 process data_validation {
 	tag 'data-validation'
-	container "ghcr.io/allenneuraldynamics/aind-smartspim-validation:si-0.0.1"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/data-validation:latest"
 
 	cpus 8
 	memory '64 GB'
