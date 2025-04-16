@@ -260,7 +260,7 @@ process preprocessing {
 	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
 	path 'capsule/data/' from validation_to_preprocessing.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-
+	path 'capsule/data/' from flatfield_estimation_to_dispatch.collect()
 	output:
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
