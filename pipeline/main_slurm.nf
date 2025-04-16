@@ -156,6 +156,53 @@ quantification_to_dispatcher = channel.create()
 // Channels from dispatcher to classification
 dispatch_to_classification = channel.create()
 
+// Flatfield
+dataset_to_flatfield_estimation_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
+dataset_to_flatfield_estimation_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*", type: 'any')
+dataset_to_flatfield_estimation_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
+flatfield_estimation_to_dispatch = channel.create()
+flatfield_estimation_to_dispatch_2 = channel.create()
+
+// capsule - aind-smartspim-flatfield-estimation
+process flatfield_estimation {
+	tag 'flatfield_estimation'
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/flatfield-estimation:latest"
+
+	cpus 16
+	memory '128 GB'
+
+	input:
+	path 'capsule/data/' from dataset_to_flatfield_estimation_manifest.collect()
+	path 'capsule/data/' from dataset_to_flatfield_estimation_imgs.collect()
+	path 'capsule/data/' from dataset_to_flatfield_estimation_data_description.collect()
+
+	output:
+	path 'capsule/results/*' into flatfield_estimation_to_dispatch
+
+	script:
+	"""
+	#!/usr/bin/env bash
+	set -e
+
+	mkdir -p capsule
+	mkdir -p capsule/data
+	mkdir -p capsule/results
+	mkdir -p capsule/scratch
+
+	echo "[${task.tag}] cloning git repo..."
+	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-flatfield-estimation.git" capsule-repo
+	mv capsule-repo/code capsule/code
+	rm -rf capsule-repo
+
+	echo "[${task.tag}] running capsule..."
+	cd capsule/code
+	chmod +x run
+	./run
+
+	echo "[${task.tag}] completed!"
+	"""
+}
+
 // capsule - aind-smartspim-validation -> Only for PNGs
 process data_validation {
 	tag 'data-validation'
@@ -391,6 +438,7 @@ process preprocessing {
 // 	path 'capsule/data/input_aind_metadata/' from dataset_to_dispatch_metadata.collect()
 // 	path 'capsule/data/' from dataset_to_dispatch_manifest.collect()
 // 	path 'capsule/data/stitched/' from stitch_to_dispatch.collect()
+// 	path 'capsule/data/flatfield_estimation/' from flatfield_estimation_to_dispatch.collect()
 
 // 	output:
 // 	path 'capsule/results/segmentation_processing_manifest_*.json' into dispatch_to_cell_detect_manifests
