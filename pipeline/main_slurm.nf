@@ -177,7 +177,7 @@ process flatfield_estimation {
 	path 'capsule/data/' from dataset_to_flatfield_estimation_imgs.collect()
 	path 'capsule/data/' from dataset_to_flatfield_estimation_data_description.collect()
 	path 'capsule/data/' from dataset_to_flatfield_estimation_metadata.collect()
-	
+
 	output:
 	path 'capsule/results/*' into flatfield_estimation_to_dispatch
 
@@ -205,90 +205,90 @@ process flatfield_estimation {
 	"""
 }
 
-// capsule - aind-smartspim-validation -> Only for PNGs
-process data_validation {
-	tag 'data-validation'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/data-validation:latest"
+// // capsule - aind-smartspim-validation -> Only for PNGs
+// process data_validation {
+// 	tag 'data-validation'
+// 	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/data-validation:latest"
 
-	cpus 8
-	memory '64 GB'
-	time '1h'
+// 	cpus 8
+// 	memory '64 GB'
+// 	time '1h'
 
-	input:
-	path 'capsule/data' from dataset_to_validation.collect()
+// 	input:
+// 	path 'capsule/data' from dataset_to_validation.collect()
 
-	output:
-	path 'capsule/results/*' into validation_to_preprocessing
+// 	output:
+// 	path 'capsule/results/*' into validation_to_preprocessing
 
-	script:
-	"""
-	#!/usr/bin/env bash
-	set -e
+// 	script:
+// 	"""
+// 	#!/usr/bin/env bash
+// 	set -e
 
-	mkdir -p capsule
-	mkdir -p capsule/data
-	mkdir -p capsule/results
-	mkdir -p capsule/scratch
+// 	mkdir -p capsule
+// 	mkdir -p capsule/data
+// 	mkdir -p capsule/results
+// 	mkdir -p capsule/scratch
 
-	echo "[${task.tag}] cloning git repo..."
-	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-validation.git" capsule-repo
-	mv capsule-repo/code capsule/code
-	rm -rf capsule-repo
+// 	echo "[${task.tag}] cloning git repo..."
+// 	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-validation.git" capsule-repo
+// 	mv capsule-repo/code capsule/code
+// 	rm -rf capsule-repo
 
-	echo "[${task.tag}] running capsule..."
-	cd capsule/code
-	chmod +x run
-	bash -x ./run
+// 	echo "[${task.tag}] running capsule..."
+// 	cd capsule/code
+// 	chmod +x run
+// 	bash -x ./run
 
-	echo "[${task.tag}] completed!"
-	"""
-}
+// 	echo "[${task.tag}] completed!"
+// 	"""
+// }
 
-// capsule - aind-destripe-shadow-correction
-process preprocessing {
-	tag 'preprocessing'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
+// // capsule - aind-destripe-shadow-correction
+// process preprocessing {
+// 	tag 'preprocessing'
+// 	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
 
-	cpus 32
-	memory '128 GB'
-	time '12h'
+// 	cpus 32
+// 	memory '128 GB'
+// 	time '12h'
 
-	input:
-	path 'capsule/data/' from dataset_to_preprocessing_imgs
-	path 'capsule/data/' from dataset_to_preprocessing_data_description.collect()
-	path 'capsule/data/' from dataset_to_preprocessing_manifest.collect()
-	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
-	path 'capsule/data/' from validation_to_preprocessing.collect()
-	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
+// 	input:
+// 	path 'capsule/data/' from dataset_to_preprocessing_imgs
+// 	path 'capsule/data/' from dataset_to_preprocessing_data_description.collect()
+// 	path 'capsule/data/' from dataset_to_preprocessing_manifest.collect()
+// 	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
+// 	path 'capsule/data/' from validation_to_preprocessing.collect()
+// 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
 
-	output:
-	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
-	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
-	path 'capsule/results/image_destriping_*_processing.json' into preprocessing_to_dispatch_1
-	path 'capsule/results/flatfield_correction_*' into preprocessing_to_dispatch_2
+// 	output:
+// 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
+// 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
+// 	path 'capsule/results/image_destriping_*_processing.json' into preprocessing_to_dispatch_1
+// 	path 'capsule/results/flatfield_correction_*' into preprocessing_to_dispatch_2
 
-	script:
-	"""
-	#!/usr/bin/env bash
-	set -e
+// 	script:
+// 	"""
+// 	#!/usr/bin/env bash
+// 	set -e
 
-	mkdir -p capsule
-	mkdir -p capsule/data
-	mkdir -p capsule/results
-	mkdir -p capsule/scratch
-	echo "[${task.tag}] cloning git repo..."
-	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
-	mv capsule-repo/code capsule/code
-	rm -rf capsule-repo
+// 	mkdir -p capsule
+// 	mkdir -p capsule/data
+// 	mkdir -p capsule/results
+// 	mkdir -p capsule/scratch
+// 	echo "[${task.tag}] cloning git repo..."
+// 	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
+// 	mv capsule-repo/code capsule/code
+// 	rm -rf capsule-repo
 
-	echo "[${task.tag}] running capsule..."
-	cd capsule/code
-	chmod +x run
-	bash -x ./run
+// 	echo "[${task.tag}] running capsule..."
+// 	cd capsule/code
+// 	chmod +x run
+// 	bash -x ./run
 
-	echo "[${task.tag}] completed!"
-	"""
-}
+// 	echo "[${task.tag}] completed!"
+// 	"""
+// }
 
 // // capsule - aind-smartspim-stitch
 // process stitching {
