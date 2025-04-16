@@ -158,6 +158,7 @@ dispatch_to_classification = channel.create()
 
 // Flatfield
 dataset_to_flatfield_estimation_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
+dataset_to_flatfield_estimation_metadata = channel.fromPath(params.lightsheet_dataset + "/derivatives/metadata.json", type: 'any')
 dataset_to_flatfield_estimation_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*", type: 'any')
 dataset_to_flatfield_estimation_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
 flatfield_estimation_to_dispatch = channel.create()
@@ -175,7 +176,8 @@ process flatfield_estimation {
 	path 'capsule/data/' from dataset_to_flatfield_estimation_manifest.collect()
 	path 'capsule/data/' from dataset_to_flatfield_estimation_imgs.collect()
 	path 'capsule/data/' from dataset_to_flatfield_estimation_data_description.collect()
-
+	path 'capsule/data/' from dataset_to_flatfield_estimation_metadata.collect()
+	
 	output:
 	path 'capsule/results/*' into flatfield_estimation_to_dispatch
 
