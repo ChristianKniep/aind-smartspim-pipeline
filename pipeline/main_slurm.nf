@@ -247,7 +247,7 @@ process data_validation {
 // capsule - aind-destripe-shadow-correction
 process preprocessing {
 	tag 'preprocessing'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:png-pipeline-v2.0"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
 
 	cpus 64
 	memory '256 GB'
@@ -277,7 +277,7 @@ process preprocessing {
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
 	echo "[${task.tag}] cloning git repo..."
-	git clone -b png-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
+	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
