@@ -247,7 +247,7 @@ process data_validation {
 // capsule - aind-destripe-shadow-correction
 process preprocessing {
 	tag 'preprocessing'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:png-pipeline-v2.0"
 
 	cpus 64
 	memory '256 GB'
