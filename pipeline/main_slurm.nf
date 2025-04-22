@@ -75,8 +75,8 @@ validation_to_preprocessing = channel.create()
 // Channels from dataset to stitching
 dataset_to_stitch_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 dataset_to_stitch_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
-dataset_to_stitch_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
-
+//dataset_to_stitch_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
+dataset_to_stitch_acquisition = channel.create()
 // Channels from preprocessing to stitching
 preprocessing_to_stitch = channel.create()
 
