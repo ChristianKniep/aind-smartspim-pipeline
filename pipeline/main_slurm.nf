@@ -75,8 +75,9 @@ validation_to_preprocessing = channel.create()
 // Channels from dataset to stitching
 dataset_to_stitch_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 dataset_to_stitch_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
-//dataset_to_stitch_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
-dataset_to_stitch_acquisition = channel.create()
+dataset_to_preprocessing_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
+dataset_to_stitch_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
+
 // Channels from preprocessing to stitching
 preprocessing_to_stitch = channel.create()
 
@@ -259,7 +260,7 @@ process preprocessing {
 	path 'capsule/data/' from dataset_to_preprocessing_manifest.collect()
 	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
 	path 'capsule/data/' from validation_to_preprocessing.collect()
-	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
+	path 'capsule/data/' from dataset_to_preprocessing_acquisition.collect()
 	output:
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
