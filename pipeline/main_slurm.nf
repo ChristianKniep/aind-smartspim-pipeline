@@ -164,46 +164,46 @@ dataset_to_flatfield_estimation_data_description = channel.fromPath(params.light
 flatfield_estimation_to_dispatch = channel.create()
 flatfield_estimation_to_dispatch_2 = channel.create()
 
-// capsule - aind-smartspim-flatfield-estimation
-process flatfield_estimation {
-	tag 'flatfield_estimation'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/flatfield-estimation:latest"
+// // capsule - aind-smartspim-flatfield-estimation
+// process flatfield_estimation {
+// 	tag 'flatfield_estimation'
+// 	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/flatfield-estimation:latest"
 
-	cpus 16
-	memory '128 GB'
+// 	cpus 16
+// 	memory '128 GB'
 
-	input:
-	path 'capsule/data/' from dataset_to_flatfield_estimation_manifest.collect()
-	path 'capsule/data/' from dataset_to_flatfield_estimation_imgs.collect()
-	path 'capsule/data/' from dataset_to_flatfield_estimation_data_description.collect()
-	path 'capsule/data/' from dataset_to_flatfield_estimation_metadata.collect()
+// 	input:
+// 	path 'capsule/data/' from dataset_to_flatfield_estimation_manifest.collect()
+// 	path 'capsule/data/' from dataset_to_flatfield_estimation_imgs.collect()
+// 	path 'capsule/data/' from dataset_to_flatfield_estimation_data_description.collect()
+// 	path 'capsule/data/' from dataset_to_flatfield_estimation_metadata.collect()
 
-	output:
-	path 'capsule/results/*' into flatfield_estimation_to_dispatch
+// 	output:
+// 	path 'capsule/results/*' into flatfield_estimation_to_dispatch
 
-	script:
-	"""
-	#!/usr/bin/env bash
-	set -e
+// 	script:
+// 	"""
+// 	#!/usr/bin/env bash
+// 	set -e
 
-	mkdir -p capsule
-	mkdir -p capsule/data
-	mkdir -p capsule/results
-	mkdir -p capsule/scratch
+// 	mkdir -p capsule
+// 	mkdir -p capsule/data
+// 	mkdir -p capsule/results
+// 	mkdir -p capsule/scratch
 
-	echo "[${task.tag}] cloning git repo..."
-	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-flatfield-estimation.git" capsule-repo
-	mv capsule-repo/code capsule/code
-	rm -rf capsule-repo
+// 	echo "[${task.tag}] cloning git repo..."
+// 	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-flatfield-estimation.git" capsule-repo
+// 	mv capsule-repo/code capsule/code
+// 	rm -rf capsule-repo
 
-	echo "[${task.tag}] running capsule..."
-	cd capsule/code
-	chmod +x run
-	./run
+// 	echo "[${task.tag}] running capsule..."
+// 	cd capsule/code
+// 	chmod +x run
+// 	./run
 
-	echo "[${task.tag}] completed!"
-	"""
-}
+// 	echo "[${task.tag}] completed!"
+// 	"""
+// }
 
 // capsule - aind-smartspim-validation -> Only for PNGs
 process data_validation {
@@ -244,10 +244,10 @@ process data_validation {
 	"""
 }
 
-// capsule - aind-destripe-shadow-correction
+// // capsule - aind-destripe-shadow-correction
 process preprocessing {
 	tag 'preprocessing'
-	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/preprocessing:latest"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/destripe:png-pipeline-v2.0"
 
 	cpus 64
 	memory '256 GB'
@@ -260,7 +260,6 @@ process preprocessing {
 	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
 	path 'capsule/data/' from validation_to_preprocessing.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/' from flatfield_estimation_to_dispatch.collect()
 	output:
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
@@ -277,7 +276,7 @@ process preprocessing {
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
 	echo "[${task.tag}] cloning git repo..."
-	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
+	git clone -b png-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
@@ -290,49 +289,49 @@ process preprocessing {
 	"""
 }
 
-// // capsule - aind-smartspim-stitch
-// process stitching {
-// 	tag 'stitching'
-// 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
+// capsule - aind-smartspim-stitch
+process stitching {
+	tag 'stitching'
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/stich:terastitcher-pipeline-v2.0"
 
-// 	cpus 32
-// 	memory '256 GB'
-// 	time '6h'
+	cpus 32
+	memory '256 GB'
+	time '6h'
 
-// 	input:
-// 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
-// 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
-// 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-// 	path 'capsule/data/' from preprocessing_to_stitch.collect()
+	input:
+	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
+	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
+	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
+	path 'capsule/data/' from preprocessing_to_stitch.collect()
 
-// 	output:
-// 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
-// 	path 'capsule/results/stitch_*' into stitch_to_dispatch
+	output:
+	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
+	path 'capsule/results/stitch_*' into stitch_to_dispatch
 
-// 	script:
-// 	"""
-// 	#!/usr/bin/env bash
-// 	set -e
+	script:
+	"""
+	#!/usr/bin/env bash
+	set -e
 
-// 	mkdir -p capsule
-// 	mkdir -p capsule/data
-// 	mkdir -p capsule/results
-// 	mkdir -p capsule/scratch
-// 	echo "[${task.tag}] cloning git repo..."
-// 	git clone "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
-// 	mv capsule-repo/code capsule/code
-// 	rm -rf capsule-repo
+	mkdir -p capsule
+	mkdir -p capsule/data
+	mkdir -p capsule/results
+	mkdir -p capsule/scratch
+	echo "[${task.tag}] cloning git repo..."
+	git clone  -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
+	mv capsule-repo/code capsule/code
+	rm -rf capsule-repo
 
-// 	echo "[${task.tag}] running capsule..."
-// 	cd capsule/code
-// 	chmod +x run
-// 	./run
+	echo "[${task.tag}] running capsule..."
+	cd capsule/code
+	chmod +x run
+	./run
 
-// 	echo "[${task.tag}] completed!"
-// 	"""
-// }
+	echo "[${task.tag}] completed!"
+	"""
+}
 
-// // capsule - aind-smartspim-fuse
+// capsule - aind-smartspim-fuse
 // process fusion {
 // 	tag 'fusion'
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
