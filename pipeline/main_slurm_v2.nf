@@ -244,47 +244,47 @@ process preprocessing {
 }
 
 // // capsule - aind-smartspim-stitch
-// process stitching {
-// 	tag 'stitching'
-// 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
+process stitching {
+	tag 'stitching'
+	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
-// 	cpus 32
-// 	memory '256 GB'
-// 	time '6h'
+	cpus 32
+	memory '256 GB'
+	time '6h'
 
-// 	input:
-// 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
-// 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
-// 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-// 	path 'capsule/data/' from preprocessing_to_stitch.collect()
+	input:
+	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
+	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
+	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
+	path 'capsule/data/' from preprocessing_to_stitch.collect()
 
-// 	output:
-// 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
-// 	path 'capsule/results/stitch_*' into stitch_to_dispatch
+	output:
+	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
+	path 'capsule/results/stitch_*' into stitch_to_dispatch
 
-// 	script:
-// 	"""
-// 	#!/usr/bin/env bash
-// 	set -e
+	script:
+	"""
+	#!/usr/bin/env bash
+	set -e
 
-// 	mkdir -p capsule
-// 	mkdir -p capsule/data
-// 	mkdir -p capsule/results
-// 	mkdir -p capsule/scratch
+	mkdir -p capsule
+	mkdir -p capsule/data
+	mkdir -p capsule/results
+	mkdir -p capsule/scratch
 
-// 	echo "[${task.tag}] cloning git repo..."
-// 	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
-// 	mv capsule-repo/code capsule/code
-// 	rm -rf capsule-repo
+	echo "[${task.tag}] cloning git repo..."
+	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
+	mv capsule-repo/code capsule/code
+	rm -rf capsule-repo
 
-// 	echo "[${task.tag}] running capsule..."
-// 	cd capsule/code
-// 	chmod +x run
-// 	./run
+	echo "[${task.tag}] running capsule..."
+	cd capsule/code
+	chmod +x run
+	./run
 
-// 	echo "[${task.tag}] completed!"
-// 	"""
-// }
+	echo "[${task.tag}] completed!"
+	"""
+}
 
 // // capsule - aind-smartspim-fuse
 // process fusion {
