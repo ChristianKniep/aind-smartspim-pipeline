@@ -12,9 +12,9 @@ CELL_DETECTION_PATH="s3://nextflow-input-sydney/mesoscale-anatomy-cell-detection
 CLOUD="true"
 
 # Results and process dataset paths
-RESULTS_PATH="s3://apse2-nextflow-results/aind-smartspim-test-results"
-OUTPUT_PATH="s3://apse2-nextflow-results/aind-smartspim-test-processed_dataset"
-WORK_PATH="s3://apse2-nextflow-work/aind-smartspim-test-workdir"
+RESULTS_PATH="s3://apse2v3-nextflow-results/aind-smartspim-test-results"
+OUTPUT_PATH="s3://apse2v3-nextflow-results/aind-smartspim-test-processed_dataset"
+WORK_PATH="s3://apse2v3-nextflow-work/aind-smartspim-test-workdir"
 
 NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow run main_slurm_v2.nf \
   --output_path $OUTPUT_PATH \
