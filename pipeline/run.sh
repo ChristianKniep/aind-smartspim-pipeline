@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DATA_PATH="s3://nextflow-input-sydney/SmartSPIM_758793_2024-10-18_22-38-15"
+DATA_PATH="s3://apse2-nextflow-input/SmartSPIM_758793_2024-10-18_22-38-15"
 
 # Template path
 TEMPLATE_PATH="s3://nextflow-input-sydney/SmartSPIM-template_2024-05-16_11-26-14"
