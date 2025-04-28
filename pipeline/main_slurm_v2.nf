@@ -163,8 +163,8 @@ process data_validation {
 	tag 'data-validation'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-validation:si-0.0.1"
 
-	cpus 8
-	//memory '64 GB'
+	cpus 4
+	memory '14 GB'
 	time '1h'
 
 	input:
@@ -203,7 +203,7 @@ process preprocessing {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
 
 	cpus 32
-	memory '124 GB'
+	memory '120 GB'
 	time '12h'
 
 	input:
@@ -249,7 +249,7 @@ process stitching {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
 	cpus 32
-	memory '256 GB'
+	memory '120 GB'
 	time '6h'
 
 	input:
@@ -292,7 +292,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
 
 // 	cpus 32
-// 	memory '256 GB'
+// 	memory '120 GB'
 // 	time '18h'
 
 // 	input:
@@ -339,7 +339,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-registration:si-0.0.24"
 
 // 	cpus 16
-// 	memory '128 GB'
+// 	memory '60 GB'
 // 	time '3h'
 
 // 	input:
@@ -383,7 +383,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-dispatch:si-0.0.1"
 
 // 	cpus 16
-// 	memory '128 GB'
+// 	memory '60 GB'
 // 	time '12h'
 
 // 	input:
@@ -436,7 +436,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-cell-detection:si-0.0.6"
 
 // 	cpus 16
-// 	memory '256 GB'
+// 	memory '60 GB'
 // 	time '12h'
 
 // 	input:
@@ -523,7 +523,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-cell-classification:si-0.0.2"
 
 // 	cpus 16
-// 	memory '128 GB'
+// 	memory '60 GB'
 // 	time '18h'
 
 // 	input:
@@ -569,7 +569,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-dispatch:si-0.0.1"
 
 // 	cpus 16
-// 	memory '128 GB'
+// 	memory '60 GB'
 // 	time '24h'
 
 // 	publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
