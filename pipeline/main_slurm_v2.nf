@@ -164,7 +164,7 @@ process data_validation {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-validation:si-0.0.1"
 
 	cpus 8
-	memory '64 GB'
+	//memory '64 GB'
 	time '1h'
 
 	input:
@@ -203,7 +203,7 @@ process preprocessing {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
 
 	cpus 32
-	memory '128 GB'
+	memory '124 GB'
 	time '12h'
 
 	input:
