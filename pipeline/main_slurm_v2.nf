@@ -202,9 +202,9 @@ process preprocessing {
 	tag 'preprocessing'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
 
-	cpus 32
-	memory '120 GB'
-	time '12h'
+	cpus 64
+	memory '240 GB'
+	time '2h'
 
 	input:
 	path 'capsule/data/' from dataset_to_preprocessing_imgs
@@ -248,7 +248,7 @@ process stitching {
 	tag 'stitching'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
-	cpus 32
+	cpus 64
 	memory '250 GB'
 	time '6h'
 
