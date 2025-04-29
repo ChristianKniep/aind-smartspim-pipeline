@@ -249,7 +249,7 @@ process stitching {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
 	cpus 32
-	memory '120 GB'
+	memory '250 GB'
 	time '6h'
 
 	input:
@@ -569,7 +569,7 @@ process stitching {
 // 	container "ghcr.io/allenneuraldynamics/aind-smartspim-dispatch:si-0.0.1"
 
 // 	cpus 16
-// 	memory '60 GB'
+// 	memory ' GB'
 // 	time '24h'
 
 // 	publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
