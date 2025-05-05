@@ -291,8 +291,8 @@ process fusion {
 	tag 'fusion'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
 
-	cpus 32
-	memory '120 GB'
+	cpus 48
+	memory '256 GB'
 	time '18h'
 
 	input:
@@ -339,7 +339,7 @@ process atlas_registration {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-registration:si-0.0.24"
 
 	cpus 16
-	memory '60 GB'
+	memory '128 GB'
 	time '3h'
 
 	input:
@@ -383,7 +383,7 @@ process dispatcher {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-dispatch:si-0.0.1"
 
 	cpus 16
-	memory '60 GB'
+	memory '120 GB'
 	time '12h'
 
 	input:
@@ -435,8 +435,8 @@ process cell_detection {
 	tag 'cell-detection'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-cell-detection:si-0.0.6"
 
-	cpus 16
-	memory '60 GB'
+	cpus 32
+	memory '256 GB'
 	time '12h'
 
 	input:
@@ -523,7 +523,7 @@ process cell_quantification {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-cell-classification:si-0.0.2"
 
 	cpus 16
-	memory '60 GB'
+	memory '120 GB'
 	time '18h'
 
 	input:
@@ -569,7 +569,7 @@ process clean_up {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-dispatch:si-0.0.1"
 
 	cpus 16
-	memory ' GB'
+	memory '120 GB'
 	time '24h'
 
 	publishDir "$RESULTS_PATH", saveAs: { filename -> new File(filename).getName() }
