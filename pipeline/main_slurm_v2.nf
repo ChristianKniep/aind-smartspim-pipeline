@@ -320,15 +320,16 @@ process fusion {
 	mkdir -p capsule/scratch
 
 	echo "[${task.tag}] cloning git repo..."
-	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-fuse.git" capsule-repo
+	git clone -b terastitcher-pipeline-v2.1 "https://github.com/ChristianKniep/aind-smartspim-fuse.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
-
+	
+	echo "CPUs: ${task.cpu}"
 	echo "[${task.tag}] running capsule..."
 	cd capsule/code
 	chmod +x run
 	./run
-
+	
 	echo "[${task.tag}] completed!"
 	"""
 }
