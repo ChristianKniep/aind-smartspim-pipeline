@@ -292,7 +292,7 @@ process fusion {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-fuse:si-0.0.1"
 
 	cpus 48
-	memory '256 GB'
+	memory '190 GB'
 	time '18h'
 
 	input:
