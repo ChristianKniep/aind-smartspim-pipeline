@@ -323,8 +323,7 @@ process fusion {
 	git clone -b terastitcher-pipeline-v2.1 "https://github.com/ChristianKniep/aind-smartspim-fuse.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
-	
-	echo "CPUs: ${task.cpu}"
+	export CO_CPUS=48
 	echo "[${task.tag}] running capsule..."
 	cd capsule/code
 	chmod +x run
@@ -337,7 +336,7 @@ process fusion {
 // capsule - aind-smartspim-ccf-registration
 process atlas_registration {
 	tag 'atlas-registration'
-	container "ghcr.io/allenneuraldynamics/aind-smartspim-registration:si-0.0.24"
+	container "public.ecr.aws/l0c7p3y3/aind-smartspim-pipeline/ccf-registration:latest"
 
 	cpus 16
 	memory '128 GB'

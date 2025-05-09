@@ -6,7 +6,7 @@ DATA_PATH="s3://apse2-nextflow-input/SmartSPIM_758793_2024-10-18_22-38-15"
 TEMPLATE_PATH="/fsx/buckets/nextflow-input-sydney/SmartSPIM-template_2024-05-16_11-26-14"
 
 # Cell detection path
-CELL_DETECTION_PATH="/fsx/buckets/nextflow-input-sydney/mesoscale-anatomy-cell-detection/models/trained_models_03212024"
+CELL_DETECTION_PATH="s3://nextflow-input-sydney/mesoscale-anatomy-cell-detection/models/trained_models_03212024"
 
 # On MM Batch, using nf-amazon
 CLOUD="true"
