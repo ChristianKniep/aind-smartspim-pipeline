@@ -3,10 +3,10 @@
 DATA_PATH="s3://apse2-nextflow-input/SmartSPIM_758793_2024-10-18_22-38-15"
 
 # Template path
-TEMPLATE_PATH="s3://nextflow-input-sydney/SmartSPIM-template_2024-05-16_11-26-14"
+TEMPLATE_PATH="/fsx/buckets/nextflow-input-sydney/SmartSPIM-template_2024-05-16_11-26-14"
 
 # Cell detection path
-CELL_DETECTION_PATH="s3://nextflow-input-sydney/mesoscale-anatomy-cell-detection/models/trained_models_03212024"
+CELL_DETECTION_PATH="/fsx/buckets/nextflow-input-sydney/mesoscale-anatomy-cell-detection/models/trained_models_03212024"
 
 # On MM Batch, using nf-amazon
 CLOUD="true"
@@ -21,7 +21,7 @@ NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow run mai
   -work-dir $WORK_PATH \
   --template_path $TEMPLATE_PATH \
   --cell_detection_model $CELL_DETECTION_PATH \
-  -c ~/aws.config \
+  -c ~/aws-od.config \
   > >(tee nextflow.stdout >&1) \
   2> >(tee nextflow.stderr >&2)
 
