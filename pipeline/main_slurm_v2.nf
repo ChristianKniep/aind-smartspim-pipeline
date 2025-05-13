@@ -232,7 +232,7 @@ process preprocessing {
 	mkdir -p capsule/scratch
 	export CO_CPUS=16
 	echo "[${task.tag}] cloning git repo..."
-	git clone -b png-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
+	git clone -b png-pipeline-v2.0-16vcpu "https://github.com/ChristianKniep/aind-smartspim-destripe.git" capsule-repo
 	mv capsule-repo/code capsule/code
 	rm -rf capsule-repo
 
