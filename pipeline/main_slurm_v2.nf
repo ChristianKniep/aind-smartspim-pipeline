@@ -203,8 +203,8 @@ process preprocessing {
 	tag 'preprocessing'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
 
-	cpus 64
-	memory '240 GB'
+	cpus 16
+	memory '32 GB'
 	time '2h'
 
 	input:
@@ -229,7 +229,7 @@ process preprocessing {
 	mkdir -p capsule/data
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
-
+	export CO_CPUS=16
 	echo "[${task.tag}] cloning git repo..."
 	git clone -b png-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-destripe.git" capsule-repo
 	mv capsule-repo/code capsule/code
