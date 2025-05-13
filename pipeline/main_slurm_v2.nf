@@ -202,7 +202,7 @@ process data_validation {
 process preprocessing {
 	tag 'preprocessing'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
-
+	label '16vcpus'
 	cpus 16
 	memory '32 GB'
 	time '2h'
