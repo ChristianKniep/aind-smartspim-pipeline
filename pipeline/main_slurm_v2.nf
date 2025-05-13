@@ -216,7 +216,7 @@ process preprocessing {
 	path 'capsule/data/' from validation_to_preprocessing.collect()
 
 	output:
-	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_stitch
+	path 'capsule/results/Ex_*_Em_*/*' into preprocessing_to_stitch.map { it -> [ it.parent.baseName, it ] }
 	path 'capsule/results/Ex_*_Em_*' into preprocessing_to_fuse
 	path 'capsule/results/image_destriping_*_processing.json' into preprocessing_to_dispatch_1
 	path 'capsule/results/flatfield_correction_*' into preprocessing_to_dispatch_2
@@ -258,8 +258,9 @@ process stitching {
 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/' from preprocessing_to_stitch.collect()
-
+	//path 'capsule/data/' from preprocessing_to_stitch.collect()
+	tuple val(name), path("capsule/data/$name/") from preprocessing_to_stitch.collect()
+	
 	output:
 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
 	path 'capsule/results/stitch_*' into stitch_to_dispatch
