@@ -258,7 +258,7 @@ process stitching {
 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/' from preprocessing_to_stitch.collect()
+	path 'capsule/data/' from preprocessing_to_stitch.collect().flatten()
 	
 	output:
 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
