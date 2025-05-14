@@ -250,8 +250,8 @@ process stitching {
 	tag 'stitching'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
-	cpus 64
-	memory '250 GB'
+	cpus 32
+	memory '25 GB'
 	time '6h'
 
 	input:
@@ -275,13 +275,13 @@ process stitching {
 	mkdir -p capsule/scratch
 
 	for stage in \$(find capsule/data/stage -name 'Ex*'); do
-        ex_dir=\$(basename \$stage)
+        ex_dir=capsule/data/\$(basename \$stage)
         [ -d \$ex_dir ] || mkdir \$ex_dir
         for part in \$(ls \$stage); do
         ln -s ../\$stage/\$part \$ex_dir/\$part
         done
     done
-
+	export CO_CPUS=32
 	echo "[${task.tag}] cloning git repo..."
 	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
 	mv capsule-repo/code capsule/code
