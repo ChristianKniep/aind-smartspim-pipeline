@@ -258,7 +258,7 @@ process stitching {
 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/' from preprocessing_to_stitch.collect().flatten()
+	path 'capsule/data/stage/?/' from preprocessing_to_stitch.collect()
 	
 	output:
 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
@@ -273,6 +273,14 @@ process stitching {
 	mkdir -p capsule/data
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
+
+	for stage in \$(find capsule/data/stage -name 'Ex*'); do
+        ex_dir=\$(basename \$stage)
+        [ -d \$ex_dir ] || mkdir \$ex_dir
+        for part in \$(ls \$stage); do
+        ln -s ../\$stage/\$part \$ex_dir/\$part
+        done
+    done
 
 	echo "[${task.tag}] cloning git repo..."
 	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
