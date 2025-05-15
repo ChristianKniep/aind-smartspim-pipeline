@@ -67,7 +67,7 @@ dataset_to_validation = channel.fromPath(params.lightsheet_dataset + "/", type: 
 
 // Channels from dataset to preprocessing capsule
 // 
-dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*/*/*", type: 'any').map { it -> [ it.parent.baseName, it ] }
+dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*/*", type: 'any').map { it -> [ it.parent.baseName, it ] }
 dataset_to_preprocessing_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
 dataset_to_preprocessing_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 dataset_to_preprocessing_derivatives = channel.fromPath(params.lightsheet_dataset + "/derivatives", type: 'any')
