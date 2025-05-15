@@ -16,7 +16,7 @@ RESULTS_PATH="s3://apse2v3-nextflow-results/aind-smartspim-test-results"
 OUTPUT_PATH="s3://apse2v3-nextflow-results/aind-smartspim-test-processed_dataset"
 WORK_PATH="s3://apse2v3-nextflow-work/aind-smartspim-test-workdir"
 
-NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow run main_slurm_v2.nf \
+NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow run main_slurm_v3.nf \
   --output_path $OUTPUT_PATH \
   -work-dir $WORK_PATH \
   --template_path $TEMPLATE_PATH \
