@@ -62,29 +62,29 @@ println "Using cloud: ${cloud}"
 
 // Input Channels - Organized by data source and target process
 // Dataset to Destripe process
-ch_dataset_to_destripe_derivatives = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/derivatives", type: 'any')
+ch_dataset_to_destripe_derivatives = channel.fromPath(params.lightsheet_dataset + "/derivatives", type: 'any')
 ch_dataset_to_destripe_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
 ch_dataset_to_destripe_images = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*", type: 'any')
 
 // Dataset to Stitching process
 ch_dataset_to_stitch_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
 ch_dataset_to_stitch_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
-ch_dataset_to_stitch_manifest = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/derivatives/processing_manifest.json", type: 'any')
+ch_dataset_to_stitch_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 
 // Dataset to Fusion process
 ch_dataset_to_fuse_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
 
 // Dataset to Flatfield Estimation process
-ch_dataset_to_flatfield_metadata = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/derivatives/metadata.json", type: 'any')
+ch_dataset_to_flatfield_metadata = channel.fromPath(params.lightsheet_dataset + "/derivatives/metadata.json", type: 'any')
 ch_dataset_to_flatfield_images = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*", type: 'any')
 ch_dataset_to_flatfield_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
 
 // Dataset to Pipeline Dispatcher
 ch_dataset_to_dispatcher_metadata = channel.fromPath(params.lightsheet_dataset + "/*.json", type: 'any')
-ch_dataset_to_dispatcher_manifest = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/derivatives/processing_manifest.json", type: 'any')
+ch_dataset_to_dispatcher_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 
 // Dataset to CCF Registration
-ch_dataset_to_registration_manifest = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/derivatives/processing_manifest.json", type: 'any')
+ch_dataset_to_registration_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 ch_dataset_to_registration_acquisition = channel.fromPath(params.lightsheet_dataset + "/acquisition.json", type: 'any')
 
 // Production models to Classification
