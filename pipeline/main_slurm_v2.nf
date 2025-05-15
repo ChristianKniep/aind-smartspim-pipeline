@@ -250,7 +250,7 @@ process stitching {
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
 	cpus 64
-	memory '25 GB'
+	memory '192 GB'
 	time '6h'
 
 	input:
