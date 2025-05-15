@@ -21,7 +21,7 @@ NXF_VER=22.10.8 DATA_PATH=$DATA_PATH RESULTS_PATH=$RESULTS_PATH nextflow run mai
   -work-dir $WORK_PATH \
   --template_path $TEMPLATE_PATH \
   --cell_detection_model $CELL_DETECTION_PATH \
-  -c ~/aws-od.config \
+  -c aws.config \
   > >(tee nextflow.stdout >&1) \
   2> >(tee nextflow.stderr >&2)
 
