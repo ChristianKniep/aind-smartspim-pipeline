@@ -67,7 +67,7 @@ dataset_to_validation = channel.fromPath(params.lightsheet_dataset + "/", type: 
 
 // Channels from dataset to preprocessing capsule
 // 
-dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*/*", type: 'any').map { it -> [ it.parent.baseName, it ] }
+dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*", type: 'any')
 dataset_to_preprocessing_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
 dataset_to_preprocessing_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 dataset_to_preprocessing_derivatives = channel.fromPath(params.lightsheet_dataset + "/derivatives", type: 'any')
@@ -204,12 +204,12 @@ process preprocessing {
 	label 'preprocessing'
 	container "ghcr.io/allenneuraldynamics/aind-smartspim-preprocessing:si-0.0.3"
 	
-	cpus 16
-	memory '32 GB'
-	time '2h'
+	cpus 64
+	memory '192 GB'
+	time '4h'
 
 	input:
-	tuple val(name), path("capsule/data/$name/") from dataset_to_preprocessing_imgs
+	path 'capsule/data/' from dataset_to_preprocessing_imgs
 	path 'capsule/data/' from dataset_to_preprocessing_data_description.collect()
 	path 'capsule/data/' from dataset_to_preprocessing_manifest.collect()
 	path 'capsule/data/' from dataset_to_preprocessing_derivatives.collect()
@@ -230,7 +230,7 @@ process preprocessing {
 	mkdir -p capsule/data
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
-	export CO_CPUS=16
+	export CO_CPUS=180
 	echo "[${task.tag}] cloning git repo..."
 	git clone -b png-pipeline-v2.0-16vcpu "https://github.com/ChristianKniep/aind-smartspim-destripe.git" capsule-repo
 	mv capsule-repo/code capsule/code
@@ -258,7 +258,7 @@ process stitching {
 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/stage/?/' from preprocessing_to_stitch.collect()
+	path 'capsule/data/' from preprocessing_to_stitch.collect()
 	
 	output:
 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
@@ -274,13 +274,6 @@ process stitching {
 	mkdir -p capsule/results
 	mkdir -p capsule/scratch
 
-	for stage in \$(find capsule/data/stage -name 'Ex*'); do
-        ex_dir=capsule/data/\$(basename \$stage)
-        [ -d \$ex_dir ] || mkdir \$ex_dir
-        for part in \$(ls \$stage); do
-        ln -s ../\$stage/\$part \$ex_dir/\$part
-        done
-    done
 	export CO_CPUS=64
 	echo "[${task.tag}] cloning git repo..."
 	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
