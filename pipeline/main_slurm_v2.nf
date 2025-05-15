@@ -67,7 +67,7 @@ dataset_to_validation = channel.fromPath(params.lightsheet_dataset + "/", type: 
 
 // Channels from dataset to preprocessing capsule
 // 
-dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*/*", type: 'any').map { it -> [ it.parent.baseName, it ] }
+dataset_to_preprocessing_imgs = channel.fromPath(params.lightsheet_dataset + "/SmartSPIM/Ex_*_Em_*/*/*", type: 'any').map { it -> [ it.parent.baseName, it ] }
 dataset_to_preprocessing_data_description = channel.fromPath(params.lightsheet_dataset + "/data_description.json", type: 'any')
 dataset_to_preprocessing_manifest = channel.fromPath(params.lightsheet_dataset + "/derivatives/processing_manifest.json", type: 'any')
 dataset_to_preprocessing_derivatives = channel.fromPath(params.lightsheet_dataset + "/derivatives", type: 'any')
@@ -246,55 +246,55 @@ process preprocessing {
 }
 
 // // capsule - aind-smartspim-stitch
-process stitching {
-	tag 'stitching'
-	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
+// process stitching {
+// 	tag 'stitching'
+// 	container "ghcr.io/allenneuraldynamics/aind-smartspim-stitch:si-1.2.4"
 
-	cpus 64
-	memory '25 GB'
-	time '6h'
+// 	cpus 64
+// 	memory '25 GB'
+// 	time '6h'
 
-	input:
-	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
-	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
-	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
-	path 'capsule/data/stage/?/' from preprocessing_to_stitch.collect()
+// 	input:
+// 	path 'capsule/data/' from dataset_to_stitch_manifest.collect()
+// 	path 'capsule/data/' from dataset_to_stitch_data_description.collect()
+// 	path 'capsule/data/' from dataset_to_stitch_acquisition.collect()
+// 	path 'capsule/data/stage/?/' from preprocessing_to_stitch.collect()
 	
-	output:
-	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
-	path 'capsule/results/stitch_*' into stitch_to_dispatch
+// 	output:
+// 	path 'capsule/results/volume_alignments.xml' into stitch_to_fuse
+// 	path 'capsule/results/stitch_*' into stitch_to_dispatch
 
-	script:
-	"""
-	#!/usr/bin/env bash
-	set -e
+// 	script:
+// 	"""
+// 	#!/usr/bin/env bash
+// 	set -e
 
-	mkdir -p capsule
-	mkdir -p capsule/data
-	mkdir -p capsule/results
-	mkdir -p capsule/scratch
+// 	mkdir -p capsule
+// 	mkdir -p capsule/data
+// 	mkdir -p capsule/results
+// 	mkdir -p capsule/scratch
 
-	for stage in \$(find capsule/data/stage -name 'Ex*'); do
-        ex_dir=capsule/data/\$(basename \$stage)
-        [ -d \$ex_dir ] || mkdir \$ex_dir
-        for part in \$(ls \$stage); do
-        ln -s ../\$stage/\$part \$ex_dir/\$part
-        done
-    done
-	export CO_CPUS=64
-	echo "[${task.tag}] cloning git repo..."
-	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
-	mv capsule-repo/code capsule/code
-	rm -rf capsule-repo
+// 	for stage in \$(find capsule/data/stage -name 'Ex*'); do
+//         ex_dir=capsule/data/\$(basename \$stage)
+//         [ -d \$ex_dir ] || mkdir \$ex_dir
+//         for part in \$(ls \$stage); do
+//         ln -s ../\$stage/\$part \$ex_dir/\$part
+//         done
+//     done
+// 	export CO_CPUS=64
+// 	echo "[${task.tag}] cloning git repo..."
+// 	git clone -b terastitcher-pipeline-v2.0 "https://github.com/AllenNeuralDynamics/aind-smartspim-stitch.git" capsule-repo
+// 	mv capsule-repo/code capsule/code
+// 	rm -rf capsule-repo
 
-	echo "[${task.tag}] running capsule..."
-	cd capsule/code
-	chmod +x run
-	./run
+// 	echo "[${task.tag}] running capsule..."
+// 	cd capsule/code
+// 	chmod +x run
+// 	./run
 
-	echo "[${task.tag}] completed!"
-	"""
-}
+// 	echo "[${task.tag}] completed!"
+// 	"""
+// }
 
 // // capsule - aind-smartspim-fuse
 // process fusion {
